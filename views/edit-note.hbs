@@ -1,0 +1,12 @@
+<div>
+    <form action="/notes/edit/note" method="POST">
+        <p>
+            <label for="notetxt">{{ title }}</label>
+        </p>
+        <input type="hidden" name="noteId" value="{{ note.id }}">
+        <textarea id="notetxt" name="notetxt">{{ note.note }}</textarea>
+        <div>
+            <button type="submit">UPDATE</button>
+        </div>
+    </form>
+</div>

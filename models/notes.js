@@ -9,7 +9,7 @@ var notes = {
     create: create,
     read: read,
     update: update,
-    delete: del
+    del: del
 };
 
 function create(note, tagId) {
@@ -34,18 +34,21 @@ function read(id) {
             deferred.reject('error!!!');
         }
         deferred.resolve(results);
-        return results;
     });
     return deferred.promise;
 }
 
-function update(note, tagId) {
-    connection.query('UPDATE note SET note = ?', [note], function (err, results) {
+function update(id, note, tagId) {
+    var deferred = Q.defer();
+
+    connection.query('UPDATE note SET note = ? WHERE id = ?', [note, id], function (err, results) {
         if (err) {
-            throw err;
+            //throw err;
+            deferred.reject('error!!!');
         }
-        return results;
+        deferred.resolve(results);
     });
+    return deferred.promise;
 }
 
 function del(id) {

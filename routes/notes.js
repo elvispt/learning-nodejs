@@ -5,6 +5,9 @@ var express = require('express'),
 
 router.get('/', controller.list);
 router.get('/create', controller.showForm);
+
+router.post('/edit', controller.editNote);
+router.post('/edit/note', controller.updateNote);
 router.post('/create/note', controller.createNote);
 router.post('/delete/note', controller.deleteNote);
 

@@ -10,17 +10,27 @@
     <hr />
     <div>
         <h3>{{ title }}</h3>
-        <form action="/notes/delete/note" method="POST">
-            {{#each notes}}
-            <ul>
-                <li>
-                    <label>
-                        {{ this.id }} - {{ this.note }}
-                        <button type="submit" value="{{ this.id }}" name="noteId">X</button>
-                    </label>
-                </li>
-            </ul>
-            {{/each }}
-        </form>
+        {{#each notes}}
+        <ul>
+            <li>
+                <form action="/notes/edit" method="POST">
+                    <button type="submit" value="{{ this.id }}" name="noteId">[-]</button>
+                </form>
+                <form action="/notes/delete/note" method="POST">
+                    <button type="submit" value="{{ this.id }}" name="noteId">X</button>
+                </form>
+                <label>{{ this.id }} - {{ this.note }}</label>
+            </li>
+        </ul>
+        {{/each }}
     </div>
 </div>
+<style>
+    ul {
+        list-style-type: none;
+    }
+
+    form {
+        display: inline-block;
+    }
+</style>
