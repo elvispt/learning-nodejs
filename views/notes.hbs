@@ -10,19 +10,23 @@
     <hr />
     <div>
         <h3>{{ title }}</h3>
-        {{#each notes}}
-        <ul>
-            <li>
-                <form action="/notes/edit" method="POST">
-                    <button type="submit" value="{{ this.id }}" name="noteId">[-]</button>
-                </form>
-                <form action="/notes/delete/note" method="POST">
-                    <button type="submit" value="{{ this.id }}" name="noteId">X</button>
-                </form>
-                <label>{{ this.id }} - {{ this.note }}</label>
-            </li>
-        </ul>
-        {{/each }}
+        <form action="/notes/delete/note" method="POST">
+            <div>
+                <button type="reset">RESET</button>
+                <button name="del">DELETE</button>
+            </div>
+            {{#each notes}}
+                <ul>
+                    <li>
+                        <input type="checkbox" name="noteId" value="{{ this.id }}">
+                        <fieldset>
+                            <legend>{{ this.creationTime }} - {{ this.lastModification }}</legend>
+                            <a href="/notes/view/{{ this.id }}">{{ this.note }}</a>
+                        </fieldset>
+                    </li>
+                </ul>
+            {{/each }}
+        </form>
     </div>
 </div>
 <style>

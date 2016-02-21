@@ -13,9 +13,11 @@ var notes = {
 };
 
 function create(note, tagId) {
-    connection.query('INSERT INTO note(note) VALUES(?)', [note], function (err, results) {
+    connection.query('INSERT INTO note(note, creationTime, lastModification) VALUES(?, now(), now())', [note], function (err, results) {
         if (err) {
-            throw err;
+            //throw err;
+            console.log(err);
+            reject('ERROR!');
         }
         return results;
     });
@@ -30,6 +32,7 @@ function read(id) {
     }
     connection.query(query, [id], function (err, results) {
         if (err) {
+            console.log(err);
             //throw err;
             deferred.reject('error!!!');
         }
@@ -44,6 +47,7 @@ function update(id, note, tagId) {
     connection.query('UPDATE note SET note = ? WHERE id = ?', [note, id], function (err, results) {
         if (err) {
             //throw err;
+            console.log(err);
             deferred.reject('error!!!');
         }
         deferred.resolve(results);
@@ -60,6 +64,7 @@ function del(id) {
     connection.query('DELETE FROM note WHERE id = ?', [id], function (err, results) {
         if (err) {
             //throw err;
+            console.log(err);
             deferred.reject('error!!!');
         }
         deferred.resolve(results);

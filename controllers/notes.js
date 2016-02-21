@@ -7,6 +7,7 @@ var vd = function (v) {
 
 var notes = {
     list: list,
+    viewNote: viewNote,
     showForm: showForm,
     editNote: editNote,
     updateNote: updateNote,
@@ -29,6 +30,18 @@ function showForm(req, res, next) {
     });
 }
 
+function viewNote(req, res, next) {
+    var noteId = req.params.noteId;
+
+    if (noteId) {
+        notesModel.read(noteId).then(function (response) {
+            res.render('view-note', {
+                note: response[0]
+            });
+        });
+    }
+}
+
 function createNote(req, res, next) {
     var noteText = req.body.notetxt || '';
 
@@ -39,21 +52,25 @@ function createNote(req, res, next) {
 }
 
 function deleteNote(req, res, next) {
-    var noteId = req.body.noteId;
+    var noteIdList = req.body.noteId;
 
-    if (noteId) {
+    noteIdList = Array.isArray(noteIdList) ? noteIdList : [noteIdList];
+    noteIdList.forEach(function (noteId) {
         try {
-            notesModel.del(noteId).then(function (response) {
-                console.log(response);
-                res.redirect('/notes');
-            },
-            function (response) {
-                console.error(response);
-            });
+            notesModel.del(noteId).then(
+                function (response) {
+                    console.log(response);
+                    res.redirect('/notes');
+                },
+                function (response) {
+                    console.error(response);
+                    res.redirect('/notes');
+                }
+            );
         } catch (e) {
             console.error(e);
         }
-    }
+    });
 }
 
 function editNote(req, res, next) {
