@@ -1,40 +1,33 @@
-<div>
-    <h1>ACTIONS</h1>
-    <div>
-        <ul>
-            <li>
-                <a href="/notes/create">CREATE NOTE</a>
-            </li>
-        </ul>
-    </div>
-    <hr />
-    <div>
-        <h3>{{ title }}</h3>
-        <form action="/notes/delete/note" method="POST">
-            <div>
-                <button type="reset">RESET</button>
-                <button name="del">DELETE</button>
+<h3>{{ title }}</h3>
+<form action="/notes/delete/note" method="POST">
+    {{#if notes.length }}
+        <div class="row">
+            <div class="col-xs-12">
+                <button name="del" class="btn btn-danger">DELETE</button>
+                <button type="reset" class="btn btn-default">RESET</button>
             </div>
-            {{#each notes}}
-                <ul>
-                    <li>
-                        <input type="checkbox" name="noteId" value="{{ this.id }}">
-                        <fieldset>
-                            <legend>{{ this.creationTime }} - {{ this.lastModification }}</legend>
-                            <a href="/notes/view/{{ this.id }}">{{ this.note }}</a>
-                        </fieldset>
-                    </li>
-                </ul>
-            {{/each }}
-        </form>
-    </div>
-</div>
-<style>
-    ul {
-        list-style-type: none;
-    }
-
-    form {
-        display: inline-block;
-    }
-</style>
+        </div>
+    {{else}}
+        Nothing to see here! :\
+    {{/if}}
+    {{#each notes}}
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <label>
+                            <input type="checkbox" name="noteId" value="{{ this.id }}"> {{ this.title }}
+                        </label>
+                    </div>
+                    <div class="panel-body">
+                        {{ this.note }}
+                    </div>
+                    <div class="panel-footer text-right">
+                        <a class="btn btn-info" href="/notes/view/{{ this.id }}">View Details</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <hr>
+    {{/each }}
+</form>

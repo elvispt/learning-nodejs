@@ -1,9 +1,6 @@
 var util = require('util'),
-    notesModel = require('../models/notes');
-
-var vd = function (v) {
-    return util.inspect(v, { colors: true });
-};
+    notesModel = require('../models/notes'),
+    _ = require('lodash');
 
 var notes = {
     list: list,
@@ -15,34 +12,47 @@ var notes = {
     deleteNote: deleteNote
 };
 
-function list(req, res, nex) {
+var layout = 'layout-notes';
+
+function render(res, view, options) {
+    res.render(view, _.extend({}, options, {
+        layout: 'layout-notes'
+    }));
+}
+
+function list(req, res) {
     var notes = notesModel.read().then(function (response) {
-        res.render('notes', {
+
+
+
+
+        render(res, 'notes', {
             title: 'List of notes',
             notes: response
         });
     });
 }
 
-function showForm(req, res, next) {
-    res.render('create-note', {
-        title: 'CREATE NOTE HERE'
+function showForm(req, res) {
+    render(res, 'create-note', {
+        title: 'CREATE NOTE HERE',
+        current: 'notes'
     });
 }
 
-function viewNote(req, res, next) {
+function viewNote(req, res) {
     var noteId = req.params.noteId;
 
     if (noteId) {
         notesModel.read(noteId).then(function (response) {
-            res.render('view-note', {
+            render(res, 'view-note', {
                 note: response[0]
             });
         });
     }
 }
 
-function createNote(req, res, next) {
+function createNote(req, res) {
     var noteText = req.body.notetxt || '';
 
     if (noteText) {
@@ -51,7 +61,7 @@ function createNote(req, res, next) {
     res.redirect('/notes');
 }
 
-function deleteNote(req, res, next) {
+function deleteNote(req, res) {
     var noteIdList = req.body.noteId;
 
     noteIdList = Array.isArray(noteIdList) ? noteIdList : [noteIdList];
@@ -73,12 +83,12 @@ function deleteNote(req, res, next) {
     });
 }
 
-function editNote(req, res, next) {
+function editNote(req, res) {
     var noteId = req.body.noteId;
 
     if (noteId) {
         notesModel.read(noteId).then(function (response) {
-            res.render('edit-note', {
+            render(res, 'edit-note', {
                 title: 'EDIT NOTE HERE',
                 note: response[0]
             });

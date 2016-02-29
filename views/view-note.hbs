@@ -1,8 +1,8 @@
 <div>
     <form action="/notes/edit" method="POST">
-        <p>ID: {{ note.id }}</p>
-        <p>CREATED ON: {{ note.creationTime }}</p>
-        <p>LAST MODIFICATION: {{ note.lastModification }}</p>
+        <small>Id: {{ note.id }}</small>
+        <p>Created: {{ note.creationTime }}</p>
+        <p>Last modification: {{ note.lastModification }}</p>
         <div>
             <input type="hidden" name="noteId" value="{{ note.id }}">
             <button type="submit">EDIT</button>

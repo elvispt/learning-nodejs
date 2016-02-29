@@ -6,8 +6,8 @@
         <input type="hidden" name="noteId" value="{{ note.id }}">
         <textarea id="notetxt" name="notetxt" style="width: 100%; height: 60vh;">{{ note.note }}</textarea>
         <div>
-            <a href="/notes/view/{{ note.id }}">CANCEL</a>
-            <button type="submit">UPDATE</button>
+            <a class="btn btn-default" href="/notes/view/{{ note.id }}">CANCEL</a>
+            <button type="submit" class="btn btn-primary">UPDATE</button>
         </div>
     </form>
 </div>
