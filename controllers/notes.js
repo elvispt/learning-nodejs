@@ -31,8 +31,8 @@ function list(req, res) {
 }
 
 function showForm(req, res) {
-    render(res, 'create-note', {
-        title: 'CREATE NOTE HERE',
+    render(res, 'edit-note', {
+        title: 'Create Note',
         current: 'notes'
     });
 }
@@ -94,7 +94,7 @@ function editNote(req, res) {
     if (noteId) {
         notesModel.read(noteId).then(function (response) {
             render(res, 'edit-note', {
-                title: 'EDIT NOTE HERE',
+                title: 'Edit note',
                 note: response[0]
             });
         });

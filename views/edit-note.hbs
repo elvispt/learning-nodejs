@@ -1,13 +1,28 @@
 <div>
-    <form action="/notes/edit/note" method="POST">
-        <p>
-            <label for="notetxt">{{ title }}</label>
-        </p>
-        <input type="hidden" name="noteId" value="{{ note.id }}">
-        <textarea id="notetxt" name="notetxt" style="width: 100%; height: 60vh;">{{ note.note }}</textarea>
+    <h3>{{ title }}</h3>
+    {{#if note.id }}
+        <form action="/notes/edit/note" method="POST">
+            <input type="hidden" name="noteId" value="{{ note.id }}">
+    {{ else }}
+        <form action="/notes/create/note" method="POST">
+    {{/if}}
+        <div class="form-group">
+            <label for="noteTitle">Title</label>
+            <input type="text" id="noteTitle" maxlength="255" class="form-control" value="{{ note.title }}">
+        </div>
+        <div class="form-group">
+            <label for="notetxt">Note</label>
+            <textarea id="notetxt" name="notetxt" class="form-control" rows="10">{{ note.note }}</textarea>
+        </div>
+
         <div>
-            <a class="btn btn-default" href="/notes/view/{{ note.id }}">CANCEL</a>
-            <button type="submit" class="btn btn-primary">UPDATE</button>
+            {{#if note.id }}
+                <a class="btn btn-default" href="/notes/view/{{ note.id }}">CANCEL</a>
+                <button type="submit" class="btn btn-primary">UPDATE</button>
+            {{ else }}
+                <a class="btn btn-default" href="/notes">CANCEL</a>
+                <button type="submit" class="btn btn-primary">CREATE</button>
+            {{/if}}
         </div>
     </form>
 </div>
