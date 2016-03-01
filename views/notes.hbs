@@ -1,33 +1,25 @@
 <h3>{{ title }}</h3>
 <form action="/notes/delete/note" method="POST">
     {{#if notes.length }}
-        <div class="row">
-            <div class="col-xs-12">
-                <button name="del" class="btn btn-danger">DELETE</button>
-                <button type="reset" class="btn btn-default">RESET</button>
-            </div>
-        </div>
-    {{else}}
-        Nothing to see here! :\
-    {{/if}}
-    {{#each notes}}
-        <div class="row">
-            <div class="col-xs-12">
-                <div class="panel panel-default">
-                    <div class="panel-heading">
-                        <label>
-                            <input type="checkbox" name="noteId" value="{{ this.id }}"> {{ this.title }}
-                        </label>
-                    </div>
-                    <div class="panel-body">
-                        {{ this.note }}
-                    </div>
-                    <div class="panel-footer">
-                        <a class="btn btn-info" href="/notes/view/{{ this.id }}">View Details</a>
+        {{#each notes}}
+            <div class="row">
+                <div class="col-xs-12">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h4>{{ this.title }}</h4>
+                        </div>
+                        <div class="panel-body">
+                            {{ this.note }}
+                        </div>
+                        <div class="panel-footer">
+                            <a class="btn btn-info" href="/notes/view/{{ this.id }}">View Details</a>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
-        <hr>
-    {{/each }}
+            <hr>
+        {{/each }}
+    {{else}}
+        Nothing to see here! :\
+    {{/if}}
 </form>

@@ -9,18 +9,24 @@ var notes = {
     create: create,
     read: read,
     update: update,
-    del: del
+    del: del,
+    count: count
 };
 
-function create(note, tagId) {
-    connection.query('INSERT INTO note(note, creationTime, lastModification) VALUES(?, now(), now())', [note], function (err, results) {
+function create(title, note, tagId) {
+    var deferred = Q.defer(),
+        query = 'INSERT INTO note(title, note, creationTime, lastModification) VALUES(?, ?, now(), now())';
+
+    connection.query(query, [title, note], function (err, results) {
         if (err) {
             //throw err;
             console.log(err);
-            reject('ERROR!');
+            deferred.reject('error!!!');
         }
+        deferred.resolve(results);
         return results;
     });
+    return deferred.promise;
 }
 
 function read(id) {
@@ -62,6 +68,21 @@ function del(id) {
         deferred.reject('No ID provided');
     }
     connection.query('DELETE FROM note WHERE id = ?', [id], function (err, results) {
+        if (err) {
+            //throw err;
+            console.log(err);
+            deferred.reject('error!!!');
+        }
+        deferred.resolve(results);
+    });
+    return deferred.promise;
+}
+
+function count() {
+    var deferred = Q.defer(),
+        query = 'SELECT count(id) as numNotes FROM note';
+
+    connection.query(query, function (err, results) {
         if (err) {
             //throw err;
             console.log(err);

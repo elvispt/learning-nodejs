@@ -9,16 +9,20 @@ var notes = {
     showForm: showForm,
     editNote: editNote,
     updateNote: updateNote,
-    createNote: createNote,
-    deleteNote: deleteNote
+    createNote: createNote
 };
 
 var layout = 'layout-notes';
 
 function render(res, view, options) {
-    res.render(view, _.extend({}, options, {
-        layout: 'layout-notes'
-    }));
+    var numNotes = notesModel.count();
+
+    notesModel.count().then(function (response) {
+        res.render(view, _.extend({}, options, {
+            numNotes: response[0].numNotes,
+            layout: 'layout-notes'
+        }));
+    });
 }
 
 function list(req, res) {
@@ -58,19 +62,26 @@ function viewNote(req, res) {
 }
 
 function createNote(req, res) {
-    var noteText = req.body.notetxt || '';
+    var noteTitle = req.body.noteTitle || '',
+        noteText = req.body.notetxt || '';
 
     if (noteText) {
-        notesModel.create(noteText);
+        notesModel.create(noteTitle, noteText);
     }
     res.redirect('/notes');
 }
 
-function deleteNote(req, res) {
-    var noteIdList = req.body.noteId;
+function editNote(req, res) {
+    var noteId = req.body.noteId;
 
-    noteIdList = Array.isArray(noteIdList) ? noteIdList : [noteIdList];
-    noteIdList.forEach(function (noteId) {
+    if (req.body.editBtn && noteId) {
+        notesModel.read(noteId).then(function (response) {
+            render(res, 'edit-note', {
+                title: 'Edit note',
+                note: response[0]
+            });
+        });
+    } else if (req.body.deleteBtn) {
         try {
             notesModel.del(noteId).then(
                 function (response) {
@@ -85,19 +96,8 @@ function deleteNote(req, res) {
         } catch (e) {
             console.error(e);
         }
-    });
-}
-
-function editNote(req, res) {
-    var noteId = req.body.noteId;
-
-    if (noteId) {
-        notesModel.read(noteId).then(function (response) {
-            render(res, 'edit-note', {
-                title: 'Edit note',
-                note: response[0]
-            });
-        });
+    } else {
+        res.redirect('/notes');
     }
 }
 
