@@ -1,6 +1,7 @@
 var util = require('util'),
     notesModel = require('../models/notes'),
-    _ = require('lodash');
+    _ = require('lodash'),
+    moment = require('moment');
 
 var notes = {
     list: list,
@@ -22,10 +23,6 @@ function render(res, view, options) {
 
 function list(req, res) {
     var notes = notesModel.read().then(function (response) {
-
-
-
-
         render(res, 'notes', {
             title: 'List of notes',
             notes: response
@@ -45,8 +42,16 @@ function viewNote(req, res) {
 
     if (noteId) {
         notesModel.read(noteId).then(function (response) {
+            var note,
+                format = 'YYYY-MM-DD HH:mm:ss';
+
+            note = _.extend({}, response[0], {
+                creationTime: moment(response[0].creationTime).format(format),
+                lastModification: moment(response[0].lastModification).format(format)
+            });
+
             render(res, 'view-note', {
-                note: response[0]
+                note: note
             });
         });
     }
