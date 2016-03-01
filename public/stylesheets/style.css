@@ -2,3 +2,25 @@
   height: 2px;
   background-color: #CACACA;
 }
+
+.notes-list .card .card-content .card-image {
+  padding: 0.5em 0.5em 0;
+}
+.notes-list .card .card-content a.nolink {
+  text-decoration: none;
+  color: initial;
+  position: relative;
+  height: 100%;
+  display: block;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+}
+
+.notes-list .card-image {
+  height: 75%;
+}
+.notes-list .card-body {
+  height: 25%;
+}

@@ -1,25 +1,29 @@
-<h3>{{ title }}</h3>
-<form action="/notes/delete/note" method="POST">
-    {{#if notes.length }}
-        {{#each notes}}
+<div class="notes-list">
+    <h3>{{ title }}</h3>
+    <form action="/notes/delete/note" method="POST">
+        {{#if notes.length }}
             <div class="row">
-                <div class="col-xs-12">
-                    <div class="panel panel-default">
-                        <div class="panel-heading">
-                            <h4>{{ this.title }}</h4>
-                        </div>
-                        <div class="panel-body">
-                            {{ this.note }}
-                        </div>
-                        <div class="panel-footer">
-                            <a class="btn btn-info" href="/notes/view/{{ this.id }}">View Details</a>
+                    {{#each notes}}
+                    <div class="col-xs-6 col-sm-4 col-md-4 col-lg-4">
+                        <div class="card">
+                            <div class="card-height-indicator"></div>
+                            <div class="card-content">
+                                <div class="card-image">
+                                    <a class="nolink" href="/notes/view/{{ this.id }}">
+                                        <p>{{ this.note }}</p>
+                                    </a>
+                                </div>
+                                <div class="card-body">
+                                    <h4>{{ this.title }}</h4>
+                                </div>
+                            </div>
                         </div>
                     </div>
-                </div>
+                {{/each }}
+
             </div>
-            <hr>
-        {{/each }}
-    {{else}}
-        Nothing to see here! :\
-    {{/if}}
-</form>
+        {{else}}
+            Nothing to see here! :\
+        {{/if}}
+    </form>
+</div>
