@@ -15,10 +15,8 @@ var notes = {
 var layout = 'layout-notes';
 
 function render(res, view, options) {
-    var numNotes = notesModel.count();
-
     notesModel.count().then(function (response) {
-        res.render(view, _.extend({}, options, {
+        res.render(view, _.extend(options, {
             numNotes: response[0].numNotes,
             layout: 'layout-notes'
         }));
@@ -26,12 +24,35 @@ function render(res, view, options) {
 }
 
 function list(req, res) {
-    var notes = notesModel.read().then(function (response) {
-        render(res, 'notes', {
-            title: 'List of notes',
-            notes: response
-        });
-    });
+    notesModel.read().then(
+        function (response) {
+            var notesList = [];
+
+            response.forEach(function (note) {
+                var data;
+                try {
+                    data = JSON.parse(note.note);
+                } catch (e) {
+                    data = {};
+                }
+                data = data.data;
+
+                var item = data[0];
+                notesList.push(_.extend({}, note, {
+                    note: item.data.text || ''
+                }));
+            });
+
+
+            render(res, 'notes', {
+                title: 'List of notes',
+                notes: notesList
+            });
+        },
+        function (response) {
+            console.error(response);
+        }
+    );
 }
 
 function showForm(req, res) {
@@ -72,44 +93,70 @@ function createNote(req, res) {
 }
 
 function editNote(req, res) {
-    var noteId = req.body.noteId;
+    var noteId = req.params.noteId;
 
-    if (req.body.editBtn && noteId) {
-        notesModel.read(noteId).then(function (response) {
-            render(res, 'edit-note', {
-                title: 'Edit note',
-                note: response[0]
-            });
+    notesModel.read(noteId).then(function (response) {
+        render(res, 'edit-note', {
+            title: 'Edit note',
+            note: response[0]
         });
-    } else if (req.body.deleteBtn) {
-        try {
-            notesModel.del(noteId).then(
-                function (response) {
-                    console.log(response);
-                    res.redirect('/notes');
-                },
-                function (response) {
-                    console.error(response);
-                    res.redirect('/notes');
-                }
-            );
-        } catch (e) {
-            console.error(e);
-        }
-    } else {
-        res.redirect('/notes');
-    }
+    });
+
+    //if (req.body.editBtn && noteId) {
+    //    notesModel.read(noteId).then(function (response) {
+    //        render(res, 'edit-note', {
+    //            title: 'Edit note',
+    //            note: response[0]
+    //        });
+    //    });
+    //} else if (req.body.deleteBtn) {
+    //    try {
+    //        notesModel.del(noteId).then(
+    //            function (response) {
+    //                console.log(response);
+    //                res.redirect('/notes');
+    //            },
+    //            function (response) {
+    //                console.error(response);
+    //                res.redirect('/notes');
+    //            }
+    //        );
+    //    } catch (e) {
+    //        console.error(e);
+    //    }
+    //} else {
+    //    res.redirect('/notes');
+    //}
 }
 
 function updateNote(req, res, next) {
     var noteId = req.body.noteId,
+        noteTitle = req.body.noteTitle,
         note = req.body.notetxt;
 
     if (noteId && note) {
-        notesModel.update(noteId, note).then(function (response) {
-            console.log(response);
-            res.redirect('/notes');
-        });
+
+        if (req.body.updateNote) {
+            notesModel.update(noteId, noteTitle, note).then(function (response) {
+                console.log(response);
+                res.redirect('/notes');
+            });
+        } else {
+            try {
+                notesModel.del(noteId).then(
+                    function (response) {
+                        console.log(response);
+                        res.redirect('/notes');
+                    },
+                    function (response) {
+                        console.error(response);
+                        res.redirect('/notes');
+                    }
+                );
+            } catch (e) {
+                console.error(e);
+            }
+        }
     }
 }
 

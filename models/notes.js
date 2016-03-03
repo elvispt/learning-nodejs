@@ -36,21 +36,25 @@ function read(id) {
     if (id) {
         query += ' WHERE id = ?';
     }
-    connection.query(query, [id], function (err, results) {
-        if (err) {
-            console.log(err);
-            //throw err;
-            deferred.reject('error!!!');
-        }
-        deferred.resolve(results);
-    });
+    try {
+        connection.query(query, [id], function (err, results) {
+            if (err) {
+                console.log(err);
+                //throw err;
+                deferred.reject('error!!!');
+            }
+            deferred.resolve(results);
+        });
+    } catch (e) {
+        console.error(e);
+    }
     return deferred.promise;
 }
 
-function update(id, note, tagId) {
+function update(id, noteTitle, note, tagId) {
     var deferred = Q.defer();
 
-    connection.query('UPDATE note SET note = ? WHERE id = ?', [note, id], function (err, results) {
+    connection.query('UPDATE note SET title = ?, note = ? WHERE id = ?', [noteTitle, note, id], function (err, results) {
         if (err) {
             //throw err;
             console.log(err);

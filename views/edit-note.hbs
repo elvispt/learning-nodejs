@@ -1,10 +1,20 @@
 <div>
-    <h3>{{ title }}</h3>
+    <h3 class="pagetitle">{{ title }}</h3>
     {{#if note.id }}
         <form action="/notes/edit/note" method="POST">
-            <input type="hidden" name="noteId" value="{{ note.id }}">
+            <input type="hidden" name="noteId" id="noteId" value="{{ note.id }}">
+            <div class="actions">
+                <button type="submit" name="updateNote" style="display: none;" value="1" class="btn btn-primary">SAVE</button>
+                <button type="submit" name="deleteNote" style="display: none;" value="1" class="btn btn-danger activate">DELETE</button>
+                <a class="btn btn-default" style="display: none;" href="/notes">CANCEL</a>
+                <button type="button" class="btn btn-primary activate">UPDATE</button>
+            </div>
     {{ else }}
         <form action="/notes/create/note" method="POST">
+            <div class="actions">
+                <button type="submit" class="btn btn-primary">CREATE</button>
+                <a class="btn btn-default" href="/notes">CANCEL</a>
+            </div>
     {{/if}}
         <div class="form-group">
             <label for="noteTitle">Title</label>
@@ -14,15 +24,26 @@
             <label for="notetxt">Note</label>
             <textarea id="notetxt" name="notetxt" class="form-control" rows="10">{{ note.note }}</textarea>
         </div>
-
-        <div>
-            {{#if note.id }}
-                <a class="btn btn-default" href="/notes/view/{{ note.id }}">CANCEL</a>
-                <button type="submit" class="btn btn-primary">UPDATE</button>
-            {{ else }}
-                <a class="btn btn-default" href="/notes">CANCEL</a>
-                <button type="submit" class="btn btn-primary">CREATE</button>
-            {{/if}}
-        </div>
     </form>
 </div>
+
+<script>
+    $(function () {
+        var noteId = $('#noteId').attr('value');
+        if (noteId) {
+            $('.btn.btn-primary.activate').on('click', function ($event) {
+                $(this).siblings().show();
+                $(this).hide();
+                $('.pagetitle').text('Edit note');
+            });
+        } else {
+        }
+
+
+        // init sir trevor
+        new SirTrevor.Editor({
+            el: $('#notetxt'),
+            blockTypes: ['Text', 'Heading']
+        });
+    });
+</script>

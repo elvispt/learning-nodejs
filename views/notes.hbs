@@ -8,10 +8,8 @@
                         <div class="card">
                             <div class="card-height-indicator"></div>
                             <div class="card-content">
-                                <div class="card-image">
-                                    <a class="nolink" href="/notes/view/{{ this.id }}">
-                                        <p>{{ this.note }}</p>
-                                    </a>
+                                <div class="card-image" data-note-id="{{ this.id }}">
+                                    <p>{{{ this.note }}}</p>
                                 </div>
                                 <div class="card-body">
                                     <h4>{{ this.title }}</h4>
@@ -27,3 +25,12 @@
         {{/if}}
     </form>
 </div>
+
+<script>
+    $(function () {
+       $('.card .card-image').on('click', function ($event) {
+           var id = $(this).data('note-id');
+           window.location.href = '/notes/edit/' + id;
+       });
+    });
+</script>

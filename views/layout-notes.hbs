@@ -7,7 +7,9 @@
       <link rel="stylesheet" href="/node_modules/bootstrap/dist/css/bootstrap.css" />
       <link rel="stylesheet" href="/node_modules/bootstrap-material-design/dist/css/bootstrap-material-design.css" />
       <link rel="stylesheet" href="/node_modules/bootstrap-material-design/dist/css/ripples.css" />
+      <link rel="stylesheet" href="/node_modules/sir-trevor/sir-trevor.css" />
       <link rel="stylesheet" href="/stylesheets/style.css">
+      <script src="/node_modules/jquery/dist/jquery.min.js"></script>
   </head>
   <body>
 
@@ -48,10 +50,10 @@
 
           <div class="col-sm-2">
               <ul class="nav nav-pills nav-stacked">
-                  <li role="presentation"><a href="/notes">List of notes <span class="badge pull-right">{{ numNotes }}</span></a></li>
+                  <li role="presentation"><a href="/notes">List of notes <span class="badge pull-right hidden-xs hidden-sm">{{ numNotes }}</span></a></li>
                   <li role="presentation"><a href="/notes/create">Create note</a></li>
                   <li role="separator" class="divider"></li>
-                  <li role="presentation"><a href="/notes/tags/create">Tags</a></li>
+                  <li role="presentation"><a href="/notes/tags/create" disabled>Tags</a></li>
               </ul>
           </div>
 
@@ -61,10 +63,10 @@
       </div>
   </div>
 
-  <script src="/node_modules/jquery/dist/jquery.js"></script>
-  <script src="/node_modules/bootstrap/dist/js/bootstrap.js"></script>
-  <script src="/node_modules/bootstrap-material-design/dist/js/material.js"></script>
-  <script src="/node_modules/bootstrap-material-design/dist/js/ripples.js"></script>
+  <script src="/node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
+  <script src="/node_modules/bootstrap-material-design/dist/js/material.min.js"></script>
+  <script src="/node_modules/bootstrap-material-design/dist/js/ripples.min.js"></script>
+  <script src="/node_modules/sir-trevor/sir-trevor.min.js"></script>
   <script src="/javascripts/init.js"></script>
   </body>
 </html>
